@@ -63,7 +63,7 @@ namespace FoodWeb.Controllers
         public ActionResult Login()
         {
             var userInCookie = Request.Cookies["UserInfo"];
-            if (userInCookie.Value == "")
+            if (userInCookie!=null)
             {
                 return RedirectToAction("Index", "Products");
             }
