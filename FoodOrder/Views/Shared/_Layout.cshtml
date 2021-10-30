@@ -52,7 +52,7 @@
                                     @{
                                         var userInCookie = Request.Cookies["UserInfo"];
                                     }
-                                    @if (userInCookie.Value != "")
+                                    @if (userInCookie != null)
                                     {
                                         string User_id = string.Empty;
                                         string name = string.Empty;
@@ -126,7 +126,7 @@
                                 @{
                                     var usersInCookie = Request.Cookies["UserInfo"];
                                 }
-                                @if (usersInCookie.Value != "")
+                                @if (userInCookie != null)
                                 {
                                     string User_id = string.Empty;
                                     User_id = userInCookie["idUser"].ToString();
