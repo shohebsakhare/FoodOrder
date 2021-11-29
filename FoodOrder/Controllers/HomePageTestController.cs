@@ -1,4 +1,16 @@
-﻿using FoodWeb.Models;
+﻿/***************** DEVLOPER INFO **********************/
+//
+//
+//
+//Created By GithubSource
+//Update By Shoheb on 29-11-2021 for adding comments
+//Home Page controller for user
+//
+//
+//
+/***************** DEVLOPER INFO **********************/
+
+using FoodWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +25,7 @@ namespace FoodWeb.Controllers
         // GET: HomePageTest
         public ActionResult Index()
         {
+            //Display list of all products
                 List<Products> products = db.Products.ToList<Products>();
                 return View(products);
            

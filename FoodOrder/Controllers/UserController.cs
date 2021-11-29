@@ -1,4 +1,17 @@
-﻿using FoodWeb.Models;
+﻿/***************** DEVLOPER INFO **********************/
+//
+//
+//
+//Created By GithubSource
+//Update By Shoheb on 29-11-2021 for adding comments
+//Login controller for admin
+//
+//
+//
+/***************** DEVLOPER INFO **********************/
+
+
+using FoodWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +23,7 @@ namespace FoodWeb.Controllers
     public class UserController : Controller
     {
         AppFoodDbContext db = new AppFoodDbContext();
-        
+
         // GET: User
         public ActionResult Index()
         {
@@ -19,6 +32,7 @@ namespace FoodWeb.Controllers
         [HttpGet]
         public ActionResult Signup()
         {
+            //Display Signup page
             var userInCookie = Request.Cookies["UserInfo"];
             if (userInCookie != null)
             {
@@ -35,23 +49,27 @@ namespace FoodWeb.Controllers
                 {
                     return View();
                 }
-                
+
             }
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Signup(SignupLogin signup)
         {
+            //Save user data in database 
             if (ModelState.IsValid)
             {
+                //Check for email already registered
                 var isEmailAlreadyExists = db.SignupLogin.Any(x => x.Email == signup.Email);
                 if (isEmailAlreadyExists)
                 {
+                    //If email existing then show following message
                     ViewBag.Message = "Email Already Registered. Please Try Again With Another Email";
                     return View();
                 }
                 else
                 {
+                    //Insert user in database
                     db.SignupLogin.Add(signup);
                     db.SaveChanges();
                     return RedirectToAction("Index", "Products");
@@ -62,8 +80,9 @@ namespace FoodWeb.Controllers
         [HttpGet]
         public ActionResult Login()
         {
+            //Display login page
             var userInCookie = Request.Cookies["UserInfo"];
-            if (userInCookie!=null)
+            if (userInCookie != null)
             {
                 return RedirectToAction("Index", "Products");
             }
@@ -79,34 +98,37 @@ namespace FoodWeb.Controllers
                     return View();
                 }
             }
-           
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Login(SignupLogin model)
         {
-                var data = db.SignupLogin.Where(s => s.Email.Equals(model.Email) && s.Password.Equals(model.Password)).ToList();
-                if (data.Count() > 0)
-                {
-                    Session["uid"] = data.FirstOrDefault().userid;
-                    HttpCookie cooskie = new HttpCookie("UserInfo");
-                    cooskie.Values["idUser"] = Convert.ToString(data.FirstOrDefault().userid);
-                    cooskie.Values["FullName"] = Convert.ToString(data.FirstOrDefault().Name);
-                    cooskie.Values["Email"] = Convert.ToString(data.FirstOrDefault().Email);
-                    cooskie.Expires = DateTime.Now.AddMonths(1);
-                    Response.Cookies.Add(cooskie);
-                    return RedirectToAction("Index", "Products");
-                }
-                else
-                {
-                    ViewBag.Message = "Login failed";
-                    return RedirectToAction("Login");
-                }
+            //Check user in database by matching details entered
+            var data = db.SignupLogin.Where(s => s.Email.Equals(model.Email) && s.Password.Equals(model.Password)).ToList();
+            if (data.Count() > 0)
+            {
+                //If details match save user in cookie and session and login
+                Session["uid"] = data.FirstOrDefault().userid;
+                HttpCookie cooskie = new HttpCookie("UserInfo");
+                cooskie.Values["idUser"] = Convert.ToString(data.FirstOrDefault().userid);
+                cooskie.Values["FullName"] = Convert.ToString(data.FirstOrDefault().Name);
+                cooskie.Values["Email"] = Convert.ToString(data.FirstOrDefault().Email);
+                cooskie.Expires = DateTime.Now.AddMonths(1);
+                Response.Cookies.Add(cooskie);
+                return RedirectToAction("Index", "Products");
+            }
+            else
+            {
+                //If no match redirect to login
+                ViewBag.Message = "Login failed";
+                return RedirectToAction("Login");
+            }
         }
         public ActionResult Logout()
         {
-
-            if(this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("UserInfo"))
+            //Destroy cookie and session and logout
+            if (this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("UserInfo"))
             {
                 HttpCookie cookie = this.ControllerContext.HttpContext.Request.Cookies["UserInfo"];
                 cookie.Expires = DateTime.Now.AddDays(-1);
@@ -116,7 +138,7 @@ namespace FoodWeb.Controllers
             Session.Clear();
             return RedirectToAction("Login");
         }
-      
+
 
     }
 }

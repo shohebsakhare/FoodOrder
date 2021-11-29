@@ -1,4 +1,16 @@
-﻿using FoodWeb.Models;
+﻿/***************** DEVLOPER INFO **********************/
+//
+//
+//
+//Created By GithubSource
+//Update By Shoheb on 29-11-2021 for adding comments
+//Information controller for contact details
+//
+//
+//
+/***************** DEVLOPER INFO **********************/
+
+using FoodWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +25,21 @@ namespace FoodWeb.Controllers
         // GET: Information
         public ActionResult ContactUs()
         {
+            //show contact us page on load
             return View();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ContactUs(ContactModel contact)
         {
+            //Query data from database of contact details
             db.contactModels.Add(contact);
             db.SaveChanges();
             return View();
         }
         public ActionResult MessageList()
         {
+            //Display list of messages
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
@@ -48,12 +63,12 @@ namespace FoodWeb.Controllers
         }
         public ActionResult AboutUs()
         {
-
+            //Display AboutUs page
             return View();
         }
         public ActionResult Blogs()
         {
-
+            //Display AboutUs page
             return View();
         }
 

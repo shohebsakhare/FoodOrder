@@ -1,4 +1,16 @@
-﻿using FoodWeb.Models;
+﻿/***************** DEVLOPER INFO **********************/
+//
+//
+//
+//Created By GithubSource
+//Update By Shoheb on 29-11-2021 for adding comments
+//Product controller for managing products
+//
+//
+//
+/***************** DEVLOPER INFO **********************/
+
+using FoodWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -15,6 +27,7 @@ namespace FoodWeb.Controllers
         // GET: Products
         public ActionResult Index()
         {
+            //Query products from database and show in list on page lod
                 List<Products> products = db.Products.ToList<Products>();
                 return View(products);
            
@@ -22,6 +35,7 @@ namespace FoodWeb.Controllers
         [HttpGet]
         public ActionResult Delete(int id)
         {
+            //Delete record of product from database
             Products products = db.Products.Find(id);
             db.Products.Remove(products);
             db.SaveChanges();
@@ -30,6 +44,7 @@ namespace FoodWeb.Controllers
         [HttpGet]
         public ActionResult CreateNewProduct()
         {
+            //Display page to create new record of product
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
@@ -52,7 +67,9 @@ namespace FoodWeb.Controllers
         [HttpPost]
         public ActionResult CreateNewProduct(HttpPostedFileBase file , Products products)
         {
-            if(file != null && file.ContentLength > 0)
+            //save uploaded pic of product in local file
+
+            if (file != null && file.ContentLength > 0)
                 try
                 {
                     string path = Path.Combine(Server.MapPath("~/Images"),
@@ -61,6 +78,8 @@ namespace FoodWeb.Controllers
                     string filename= file.FileName;
                     ViewBag.Message = "File uploaded successfully";
                     products.ProductPicture = "Images/"+ filename;
+
+                    //Save product data in database
                     db.Products.Add(products);
                     db.SaveChanges();
                 }
@@ -78,9 +97,12 @@ namespace FoodWeb.Controllers
         [HttpGet]
         public ActionResult EditProduct(int id)
         {
+            //Open product page in edit view of particular product
             var adminInCookie = Request.Cookies["AdminInfo"];
+            //check user present in cookie
             if (adminInCookie != null)
             {
+                //Query from database
                 Products products = db.Products.Find(id);
                 if (products == null)
                 {
@@ -90,6 +112,7 @@ namespace FoodWeb.Controllers
             }
             else
             {
+                //Logout if user not present
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie != null)
                 {
@@ -105,15 +128,19 @@ namespace FoodWeb.Controllers
         [HttpPost]
         public ActionResult EditProduct(HttpPostedFileBase file, Products products)
         {
+            //Save product data after edit and update in database
             if (file != null && file.ContentLength > 0)
                 try
                 {
+                    //save new pic uploaded
                     string path = Path.Combine(Server.MapPath("~/Images"),
                                                Path.GetFileName(file.FileName));
                     file.SaveAs(path);
                     string filename = file.FileName;
                     ViewBag.Message = "File uploaded successfully";
                     products.ProductPicture = "Images/" + filename;
+
+                    //save data in db
                     db.Entry(products).State = EntityState.Modified;
                     db.SaveChanges();
                 }
@@ -129,6 +156,7 @@ namespace FoodWeb.Controllers
         }
         public ActionResult ViewProductsAdmin()
         {
+            //View product data
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
@@ -149,9 +177,11 @@ namespace FoodWeb.Controllers
             }
            
         }
-  
+        #region UserActions
+        //Start User actions
         public ActionResult addToCart(int? Id)
         {
+            //Dispplay product page
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
@@ -162,6 +192,7 @@ namespace FoodWeb.Controllers
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie != null)
                 {
+                    //Find product in db
                     Products products = db.Products.Find(Id);
                     return View(products);
 
@@ -179,9 +210,11 @@ namespace FoodWeb.Controllers
         [HttpPost]
         public ActionResult addToCart(int Id, string number)
         {
+            //Add product to cart
             var userInCookie = Request.Cookies["UserInfo"];
             if (userInCookie != null)
             {
+                //Product is saved temporary in TempData
                 Products products = db.Products.Find(Id);
                 Cart cart = new Cart();
                 cart.productId = products.id;
@@ -192,14 +225,13 @@ namespace FoodWeb.Controllers
                 cart.bill = cart.price * cart.qty;
                 if (TempData["cart"] == null)
                 {
+                    //Save first product
                     li.Add(cart);
                     TempData["cart"] = li;
                 }
                 else
                 {
-                    //List<Cart> li2 = TempData["cart"] as List<Cart>;
-                    //li2.Add(cart);
-                    //TempData["cart"] = li2;
+                    //Save rest products
                     List<Cart> li2 = TempData["cart"] as List<Cart>;
                     int flag = 0;
                     foreach(var item in li2)
@@ -230,6 +262,8 @@ namespace FoodWeb.Controllers
 
         public ActionResult Checkout()
         {
+            //Display Checkout Page
+
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
@@ -240,6 +274,7 @@ namespace FoodWeb.Controllers
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie != null)
                 {
+                    //Calculate total and insert in tempdata
                     TempData.Keep();
                     if (TempData["cart"] != null)
                     {
@@ -266,44 +301,26 @@ namespace FoodWeb.Controllers
         [HttpPost]
         public ActionResult Checkout(Order order)
         {
-            var userInCookie = Request.Cookies["UserInfo"];
-            int iduser = Convert.ToInt32(userInCookie["idUser"]);
-            List<Cart> li = TempData["cart"] as List<Cart>;
-            InvoiceModel invoice = new InvoiceModel();
-            invoice.FKUserID = iduser;
-            invoice.DateInvoice = System.DateTime.Now;
-            invoice.Total_Bill = (float)TempData["Total"];
-            db.invoiceModel.Add(invoice);
-            db.SaveChanges();
-            foreach(var item in li)
-            {
-                Order odr = new Order();
-                odr.FkProdId = item.productId;
-                odr.FkInvoiceID = invoice.ID;
-                odr.Order_Date = System.DateTime.Now;
-                odr.Qty = item.qty;
-                odr.Unit_Price = (int)item.price;
-                odr.Order_Bill = item.bill;
-                db.orders.Add(odr);
-                db.SaveChanges();
-            }
-            TempData.Remove("total");
-            TempData.Remove("cart");
-            TempData.Keep();
-            return RedirectToAction("Index");
+            //Redirect to payment gateway page 
+            return Redirect("/Payment/Index");
         }
         public ActionResult Remove(int? id)
         {
+            //Remove product from cart
             List<Cart> li2 = TempData["cart"] as List<Cart>;
             Cart c = li2.Where(x => x.productId == id).SingleOrDefault();
             li2.Remove(c);
             float h = 0;
+            //Recalculate amount for billing
             foreach(var item in li2)
             {
                 h += item.bill;
             }
+            
             TempData["total"] = h;
             return RedirectToAction("Checkout");
         }
+        //End User actions
+        #endregion
     }
 }

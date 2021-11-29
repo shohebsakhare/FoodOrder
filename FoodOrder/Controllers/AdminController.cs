@@ -1,4 +1,15 @@
-﻿using FoodWeb.Models;
+﻿/***************** DEVLOPER INFO **********************/
+//
+//
+//
+//Created By GithubSource
+//Update By Shoheb on 29-11-2021 for adding comments
+//Login controller for admin
+//
+//
+//
+/***************** DEVLOPER INFO **********************/
+using FoodWeb.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,17 +27,21 @@ namespace FoodWeb.Controllers
             var adminInCookie = Request.Cookies["AdminInfo"];
             if(adminInCookie != null)
             {
+                //If  cookie found redirect to dashboard 
                 return View();
             }
             else
             {
+                //check cookie belonging to customer or admin and redirect 
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie != null)
                 {
+                    //User redirect
                     return RedirectToAction("Index", "Products");
                 }
                 else
                 {
+                    //Admin redirect to login as admin cookie not found
                     return RedirectToAction("LoginAdmin", "Admin");
                 }
             }
@@ -38,17 +53,21 @@ namespace FoodWeb.Controllers
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
+                //If  cookie found redirect to dashboard 
                 return RedirectToAction("Index", "Admin"); ;
             }
             else
             {
+                //check cookie belonging to customer or admin and redirect 
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie!=null)
                 {
+                    //User redirect
                     return RedirectToAction("Index", "Products");
                 }
                 else
                 {
+                    //Admin redirect to login as admin cookie not found
                     return View();
                 }
             }
@@ -58,9 +77,12 @@ namespace FoodWeb.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LoginAdmin(AdminLogin model)
         {
+            //check login details and validate from database
+
             var data = db.adminLogin.Where(s => s.Email.Equals(model.Email) && s.Password.Equals(model.Password)).ToList();
             if (data.Count() > 0)
             {
+                //If login details are matching record in database set in cookie 
                 HttpCookie cooskie = new HttpCookie("AdminInfo");
                 cooskie.Values["idAdmin"] = Convert.ToString(data.FirstOrDefault().adminid);
                 cooskie.Values["Email"] = Convert.ToString(data.FirstOrDefault().Email);
@@ -76,6 +98,7 @@ namespace FoodWeb.Controllers
         }
         public ActionResult LogoutAdmin()
         {
+            //destroy cookie  and logout 
             if (this.ControllerContext.HttpContext.Request.Cookies.AllKeys.Contains("AdminInfo"))
             {
                 HttpCookie cookie = this.ControllerContext.HttpContext.Request.Cookies["AdminInfo"];
@@ -87,9 +110,12 @@ namespace FoodWeb.Controllers
 
         public ActionResult ListOfOrders()
         {
+            // List of all orders from user
             var adminInCookie = Request.Cookies["AdminInfo"];
+            // check admin in cookie or else logout automatically
             if (adminInCookie != null)
             {
+                //cookie available 
                 float t = 0;
                 List<Order> order = db.orders.ToList<Order>();
                 foreach(var item in order)
@@ -101,6 +127,7 @@ namespace FoodWeb.Controllers
             }
             else
             {
+                //cookie not available 
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie != null)
                 {
@@ -114,9 +141,11 @@ namespace FoodWeb.Controllers
         }
         public ActionResult ListOfInvoices()
         {
+            //Display list of invoices to admin
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
+                //cookie  available 
                 float t = 0;
                 List<InvoiceModel> invoice = db.invoiceModel.ToList<InvoiceModel>();
                 
@@ -131,6 +160,7 @@ namespace FoodWeb.Controllers
             }
             else
             {
+                //cookie not available 
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie != null)
                 {
