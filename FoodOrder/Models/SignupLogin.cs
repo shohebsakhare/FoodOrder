@@ -31,5 +31,8 @@ namespace FoodWeb.Models
         [Compare("Password", ErrorMessage = "Password not Matched")]
         public string ConfirmPassword { get; set; }
 
+        [StringLength(500)]
+        [Required(ErrorMessage = "Address Required")]
+        public string Address { get; set; }
     }
 }

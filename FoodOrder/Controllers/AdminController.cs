@@ -3,8 +3,8 @@
 //
 //
 //Created By GithubSource
-//Update By Shoheb on 29-11-2021 for adding comments
-//Login controller for admin
+//Update By Shoheb on 29-11-2021 for adding comments and adding method to update location of order
+//controller for Login,Ivoice details,order details,location update for admin
 //
 //
 //
@@ -12,6 +12,7 @@
 using FoodWeb.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -25,7 +26,7 @@ namespace FoodWeb.Controllers
         public ActionResult Index()
         {
             var adminInCookie = Request.Cookies["AdminInfo"];
-            if(adminInCookie != null)
+            if (adminInCookie != null)
             {
                 //If  cookie found redirect to dashboard 
                 return View();
@@ -60,7 +61,7 @@ namespace FoodWeb.Controllers
             {
                 //check cookie belonging to customer or admin and redirect 
                 var userInCookie = Request.Cookies["UserInfo"];
-                if (userInCookie!=null)
+                if (userInCookie != null && userInCookie.Value != "")
                 {
                     //User redirect
                     return RedirectToAction("Index", "Products");
@@ -71,7 +72,7 @@ namespace FoodWeb.Controllers
                     return View();
                 }
             }
-            
+
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -118,7 +119,7 @@ namespace FoodWeb.Controllers
                 //cookie available 
                 float t = 0;
                 List<Order> order = db.orders.ToList<Order>();
-                foreach(var item in order)
+                foreach (var item in order)
                 {
                     t += item.Order_Bill;
                 }
@@ -147,16 +148,16 @@ namespace FoodWeb.Controllers
             {
                 //cookie  available 
                 float t = 0;
-                List<InvoiceModel> invoice = db.invoiceModel.ToList<InvoiceModel>();
-                
-                foreach (var item in invoice)
+                MainModel viewModel = new MainModel();
+                viewModel.invList = db.invoiceModel.ToList<InvoiceModel>();
+                viewModel.locationList = db.HubLoc.ToList<HubLocation>();
+
+                foreach (var item in viewModel.invList)
                 {
                     t += item.Total_Bill;
-                   
-                    
                 }
                 TempData["InvoiceTotal"] = t;
-                return View(invoice);
+                return View(viewModel);
             }
             else
             {
@@ -171,6 +172,26 @@ namespace FoodWeb.Controllers
                     return RedirectToAction("LoginAdmin", "Admin");
                 }
             }
+        }
+        [HttpPost]
+        public ActionResult UpdateLocation(UpdateLocation model)
+        {
+            //update location of order
+            try
+            {
+                InvoiceModel mdel = new InvoiceModel();
+                mdel = db.invoiceModel.SingleOrDefault(s => s.ID.Equals(model.InvoiceId));
+                mdel.LocationId = model.LocationId;
+                db.Entry(mdel).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "ERROR:" + ex.Message.ToString();
+                return Json(false);
+            }
+
+            return Json(true);
         }
     }
 }

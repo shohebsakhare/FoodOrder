@@ -19,6 +19,7 @@ namespace FoodWeb.Models
         public DbSet<Order> orders { get; set; }
         public DbSet<ContactModel> contactModels { get; set; }
         public DbSet<BlogModel> blogModels { get; set; }
-
+        public DbSet<PaymentInfo> payments { get; set; }
+        public DbSet<HubLocation> HubLoc { get; set; }
     }
 }

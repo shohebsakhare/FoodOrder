@@ -34,7 +34,7 @@ namespace FoodWeb.Controllers
         {
             //Display Signup page
             var userInCookie = Request.Cookies["UserInfo"];
-            if (userInCookie != null)
+            if (userInCookie != null && userInCookie.Value!="")
             {
                 return RedirectToAction("Index", "Products");
             }
@@ -82,7 +82,7 @@ namespace FoodWeb.Controllers
         {
             //Display login page
             var userInCookie = Request.Cookies["UserInfo"];
-            if (userInCookie != null)
+            if (userInCookie != null && userInCookie.Value!="")
             {
                 return RedirectToAction("Index", "Products");
             }

@@ -1,10 +1,42 @@
-﻿@model IEnumerable<FoodWeb.Models.InvoiceModel>
+﻿@model FoodWeb.Models.MainModel
 
 @{
     ViewBag.Title = "ListOfInvoices";
     Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
 }
+<script>
+    $("#ddlLoc").change(function () {
 
+
+    });
+    $(document).on('change', '.ddlLoc', function () {
+        var data = $(this).val();
+        if (data == 0) {
+            alert("Please select a valid location");
+            return false;
+        }
+        var user_id = $(this).val().split('&')[1];
+        var loc_id = $(this).val().split('&')[2];
+        var inv_id = $(this).val().split('&')[0];
+
+
+        $.ajax({
+            method: "POST",
+            url: "/Admin/UpdateLocation",
+            data: { UserId: user_id, LocationId: loc_id, InvoiceId: inv_id },
+            success: function (data, status, xhr) {   // success callback function
+
+                if (confirm("Location Updated")) {
+                    location.reload();
+                }
+            },
+            error: function (jqXhr, textStatus, errorMessage) { // error callback
+                alert('Error: ' + errorMessage);
+            }
+        });
+
+    });
+</script>
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -37,17 +69,44 @@
                                         <th>User Name</th>
                                         <th>Total Bill</th>
                                         <th>Invoice Date</th>
+                                        <th>Update Location</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (var item in Model)
+                                    @foreach (var item in Model.invList)
                                     {
-                                    <tr>
-                                        <td>@Html.DisplayFor(modelItem => item.user.Name)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.Total_Bill)</td>
-                                        <td>@Html.DisplayFor(modelItem => item.DateInvoice)</td>
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.user.Name)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.Total_Bill)</td>
+                                            <td>@Html.DisplayFor(modelItem => item.DateInvoice)</td>
+                                            <td>
+                                                @{
+                                                    string cls = "";
+                                                    if (item.LocationId == 10) {
+                                                        cls = "disabled";
+                                                    }
+                                                }
+                                                <select class="ddlLoc" @cls>
+                                                    @if (item.LocationId == 0)
+                                                    {
+                                                        <option value="0">Select</option>
+                                                    }
+                                                    @foreach (var Locitem in Model.locationList)
+                                                    {
+                                                        if (item.LocationId == Locitem.Id)
+                                                        {
+                                                            <option value="@item.ID&@item.FKUserID&@item.LocationId" selected>@Locitem.Locations</option>
+                                                        }
 
-                                    </tr>
+                                                        else
+                                                        {
+                                                            <option value="@item.ID&@item.FKUserID&@Locitem.Id">@Locitem.Locations</option>
+                                                        }
+
+                                                    }
+                                                </select>
+                                            </td>
+                                        </tr>
                                     }
                                 </tbody>
                             </table>

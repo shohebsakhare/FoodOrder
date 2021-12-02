@@ -177,3 +177,4 @@ D:\UEL\New folder\FoodOrder\FoodOrder\bin\Stripe.net.xml
 D:\UEL\New folder\FoodOrder\FoodOrder\bin\System.Runtime.CompilerServices.Unsafe.xml
 D:\UEL\New folder\FoodOrder\FoodOrder\bin\System.Threading.Tasks.Extensions.xml
 D:\UEL\New folder\FoodOrder\FoodOrder\obj\Debug\FoodOrder.csproj.AssemblyReference.cache
+D:\UEL\New folder\FoodOrder\FoodOrder\bin\GoogleMaps.LocationServices.dll

@@ -53,6 +53,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="GoogleMaps.LocationServices, Version=1.2.0.5, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\GoogleMaps.LocationServices.1.2.0.5\lib\netstandard2.0\GoogleMaps.LocationServices.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.1.1.0\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -146,7 +149,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomePageTestController.cs" />
+    <Compile Include="Controllers\HubLocationController.cs" />
     <Compile Include="Controllers\InformationController.cs" />
+    <Compile Include="Controllers\OrderController.cs" />
     <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -163,8 +168,10 @@
     <Compile Include="Models\BlogModel.cs" />
     <Compile Include="Models\Cart.cs" />
     <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\HubLocation.cs" />
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\Order.cs" />
+    <Compile Include="Models\PaymentInfo.cs" />
     <Compile Include="Models\Products.cs" />
     <Compile Include="Models\SignupLogin.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
@@ -1007,7 +1014,10 @@
     </Content>
     <Content Include="Views\Shared\_LayoutAdminPage.cshtml" />
     <Content Include="Views\Payment\Index.cshtml" />
-    <Content Include="Views\Payment\Checkout.cshtml" />
+    <Content Include="Views\Payment\ProcessPayment.cshtml" />
+    <Content Include="Views\HubLocation\Index.cshtml" />
+    <Content Include="Views\HubLocation\CreateNewHubLocation.cshtml" />
+    <Content Include="Views\Order\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="obj\Debug\TempPE\" />

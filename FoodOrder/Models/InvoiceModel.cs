@@ -7,6 +7,12 @@ using System.Web;
 
 namespace FoodWeb.Models
 {
+    public class MainModel
+    {
+        public List<InvoiceModel> invList { get; set; }
+        public List<HubLocation> locationList { get; set; }
+    }
+   
     public class InvoiceModel
     {
         [Key]
@@ -18,7 +24,8 @@ namespace FoodWeb.Models
         public int? FKUserID { get; set; }
         [ForeignKey("FKUserID")]
         public virtual SignupLogin user { get; set; }
-
-
+        public int  LocationId { get; set; }
+        //public List<HubLocation> ListLocation { get; set; }
     }
+   
 }

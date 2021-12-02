@@ -51,7 +51,11 @@
                                         <span data-toggle="#form-register-username-confrm-password" class="password__toggle--btn fa fa-fw fa-eye"></span>
                                     </div>
                                 </div>
-
+                                <div class="form-box__single-group m-b-20">
+                                    <label for="form-register-username">Address *</label>
+                                    @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                </div>
                                 <button class="btn btn--box btn--medium btn--radius btn--black btn--black-hover-green btn--uppercase font--semi-bold" type="submit">REGISTER</button>
                             </form>
                         </div>

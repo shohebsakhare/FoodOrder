@@ -20,4 +20,11 @@ namespace FoodWeb.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
     }
-}
+    public class UpdateLocation
+    {
+        public int UserId { get; set; }
+        public int LocationId { get; set; }
+        public int InvoiceId { get; set; }
+    }
+
+    }
