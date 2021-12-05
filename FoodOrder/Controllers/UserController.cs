@@ -1,14 +1,14 @@
-﻿/***************** DEVLOPER INFO **********************/
+﻿/***************** DEVLOPER AND PAGE INFO **********************/
 //
 //
 //
 //Created By GithubSource
 //Update By Shoheb on 29-11-2021 for adding comments
-//Login controller for admin
+//Login controller for user
 //
 //
 //
-/***************** DEVLOPER INFO **********************/
+/***************** DEVLOPER AND PAGE INFO **********************/
 
 
 using FoodWeb.Models;
@@ -36,6 +36,7 @@ namespace FoodWeb.Controllers
             var userInCookie = Request.Cookies["UserInfo"];
             if (userInCookie != null && userInCookie.Value!="")
             {
+                //redirect to products order page id user exists
                 return RedirectToAction("Index", "Products");
             }
             else
@@ -43,10 +44,12 @@ namespace FoodWeb.Controllers
                 var adminInCookie = Request.Cookies["AdminInfo"];
                 if (adminInCookie != null)
                 {
+                    //redirect to admin dashboard if admin user exists
                     return RedirectToAction("Index", "Admin");
                 }
                 else
                 {
+                    //Show sign up page
                     return View();
                 }
 

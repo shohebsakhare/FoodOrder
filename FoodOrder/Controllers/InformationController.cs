@@ -1,4 +1,4 @@
-﻿/***************** DEVLOPER INFO **********************/
+﻿/***************** DEVLOPER AND PAGE INFO **********************/
 //
 //
 //
@@ -8,7 +8,7 @@
 //
 //
 //
-/***************** DEVLOPER INFO **********************/
+/***************** DEVLOPER AND PAGE INFO **********************/
 
 using FoodWeb.Models;
 using System;

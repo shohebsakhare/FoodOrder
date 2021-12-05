@@ -26,5 +26,11 @@ namespace FoodWeb.Models
         public int LocationId { get; set; }
         public int InvoiceId { get; set; }
     }
-
+    public class Dashboard
+    {
+        public int Invoice { get; set; }
+        public int Delivered { get; set; }
+        public int Pending { get; set; }
+        public int UserNo { get; set; }
     }
+}

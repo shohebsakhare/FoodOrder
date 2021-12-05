@@ -1,0 +1,28 @@
+﻿<script>
+    $('#submitButton').click(function () {
+        $('#card').val($('#card_number').val());
+        $('#cvv').val($('#cc-exp').val());
+        $('#exp').val($('#cc-csc').val());
+    });
+</script>
+<div class="text-center">
+    <form action="/Payment/ProcessPayment" method="post">
+        <input type="hidden" id="card" name="card" />
+        <input type="hidden" id="cvv" name="cvv" />
+        <input type="hidden" id="exp" name="exp" />
+        <article>
+            <label>Amount: <i class="fa fa-pound-sign"></i>   @Math.Round(@ViewBag.GBPAmount, 2)</label>
+        </article>
+        <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+                data-key=@System.Configuration.ConfigurationManager.AppSettings["stripe_publishable_key"]
+                
+                data-name="GSORE"
+                data-currency="GBP"
+                data-description="Payments"
+                data-image="/Content/assets/img/logo/logo.png"
+                data-locale="en"
+                data-zip-code="true">
+        </script>
+
+    </form>
+</div>

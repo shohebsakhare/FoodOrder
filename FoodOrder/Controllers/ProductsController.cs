@@ -1,14 +1,14 @@
-﻿/***************** DEVLOPER INFO **********************/
+﻿/***************** DEVLOPER AND PAGE INFO **********************/
 //
 //
 //
 //Created By GithubSource
 //Update By Shoheb on 29-11-2021 for adding comments
-//Product controller for managing products
+//Product controller for managing products for admin side and for user side it is used to view and add products to cart
 //
 //
 //
-/***************** DEVLOPER INFO **********************/
+/***************** DEVLOPER AND PAGE INFO **********************/
 
 using FoodWeb.Models;
 using System;
@@ -48,10 +48,12 @@ namespace FoodWeb.Controllers
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
+                //If cookie exists show page
                 return View();
             }
             else
             {
+                //If no cookie redirect to login
                 var userInCookie = Request.Cookies["UserInfo"];
                 if (userInCookie != null)
                 {
@@ -68,7 +70,7 @@ namespace FoodWeb.Controllers
         public ActionResult CreateNewProduct(HttpPostedFileBase file , Products products)
         {
             //save uploaded pic of product in local file
-
+            //Check if user uploaded file
             if (file != null && file.ContentLength > 0)
                 try
                 {
@@ -76,12 +78,13 @@ namespace FoodWeb.Controllers
                                                Path.GetFileName(file.FileName));
                     file.SaveAs(path);
                     string filename= file.FileName;
-                    ViewBag.Message = "File uploaded successfully";
+                   
                     products.ProductPicture = "Images/"+ filename;
 
                     //Save product data in database
                     db.Products.Add(products);
                     db.SaveChanges();
+                    ViewBag.Message = "Data uploaded successfully";
                 }
                 catch (Exception ex)
                 {
@@ -89,6 +92,7 @@ namespace FoodWeb.Controllers
                 }
             else
             {
+                //if no file record will not be create user will get following message
                 ViewBag.Message = "You have not specified a file.";
             } 
             return View();
@@ -129,6 +133,7 @@ namespace FoodWeb.Controllers
         public ActionResult EditProduct(HttpPostedFileBase file, Products products)
         {
             //Save product data after edit and update in database
+            //Check if user uploaded file
             if (file != null && file.ContentLength > 0)
                 try
                 {
@@ -137,12 +142,13 @@ namespace FoodWeb.Controllers
                                                Path.GetFileName(file.FileName));
                     file.SaveAs(path);
                     string filename = file.FileName;
-                    ViewBag.Message = "File uploaded successfully";
+                    
                     products.ProductPicture = "Images/" + filename;
 
                     //save data in db
                     db.Entry(products).State = EntityState.Modified;
                     db.SaveChanges();
+                    ViewBag.Message = "Data uploaded successfully";
                 }
                 catch (Exception ex)
                 {
@@ -150,9 +156,10 @@ namespace FoodWeb.Controllers
                 }
             else
             {
+                //if no file record will not be create user will get following message
                 ViewBag.Message = "You have not specified a file.";
             }
-            return RedirectToAction("ViewProductsAdmin", "Products");
+            return View();
         }
         public ActionResult ViewProductsAdmin()
         {

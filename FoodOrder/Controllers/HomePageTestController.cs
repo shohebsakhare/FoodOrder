@@ -1,14 +1,14 @@
-﻿/***************** DEVLOPER INFO **********************/
+﻿/***************** DEVLOPER AND PAGE INFO **********************/
 //
 //
 //
 //Created By GithubSource
 //Update By Shoheb on 29-11-2021 for adding comments
-//Home Page controller for user
+//Home Page controller for showing products to user
 //
 //
 //
-/***************** DEVLOPER INFO **********************/
+/***************** DEVLOPER AND PAGE INFO **********************/
 
 using FoodWeb.Models;
 using System;

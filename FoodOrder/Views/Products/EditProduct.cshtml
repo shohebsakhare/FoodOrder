@@ -32,6 +32,8 @@
                     <div class="box box-primary">
                         <div class="box-header">
                             <h3 class="box-title">Edit Product</h3>
+                            <br />
+                            @ViewBag.Message
                         </div><!-- /.box-header -->
                         <!-- form start -->
 
@@ -57,7 +59,7 @@
                                     @Html.LabelFor(model => model.ProductPicture, htmlAttributes: new { @class = " " })
 
                                     <input type="file" name="file" id="file">
-                                    @ViewBag.Message
+                                   
 
                                     @*@Html.EditorFor(model => model.ProductPicture, new { htmlAttributes = new { @class = "form-control" } })*@
                                     @Html.ValidationMessageFor(model => model.ProductPicture, "", new { @class = "text-danger" })

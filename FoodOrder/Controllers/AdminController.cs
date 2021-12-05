@@ -1,4 +1,4 @@
-﻿/***************** DEVLOPER INFO **********************/
+﻿/***************** DEVLOPER AND PAGE INFO **********************/
 //
 //
 //
@@ -8,7 +8,7 @@
 //
 //
 //
-/***************** DEVLOPER INFO **********************/
+/***************** DEVLOPER AND PAGE INFO **********************/
 using FoodWeb.Models;
 using System;
 using System.Collections.Generic;
@@ -29,7 +29,19 @@ namespace FoodWeb.Controllers
             if (adminInCookie != null)
             {
                 //If  cookie found redirect to dashboard 
-                return View();
+                var data_delivered = db.invoiceModel.Where(s => s.LocationId == 10).Count();
+                var data_inv_count = db.invoiceModel.Count();
+                var data_pending = db.invoiceModel.Where(s => s.LocationId != 10).Count();
+                var data_user = db.SignupLogin.Count();
+
+                //Query data for showing in dashboard Labels
+                Dashboard dash = new Dashboard();
+                dash.Delivered = data_delivered;
+                dash.Invoice = data_inv_count;
+                dash.Pending = data_pending;
+                dash.UserNo = data_user;
+
+                return View(dash);
             }
             else
             {
@@ -42,6 +54,7 @@ namespace FoodWeb.Controllers
                 }
                 else
                 {
+                   
                     //Admin redirect to login as admin cookie not found
                     return RedirectToAction("LoginAdmin", "Admin");
                 }
@@ -180,8 +193,10 @@ namespace FoodWeb.Controllers
             try
             {
                 InvoiceModel mdel = new InvoiceModel();
+                //get details of invoice from DB
                 mdel = db.invoiceModel.SingleOrDefault(s => s.ID.Equals(model.InvoiceId));
                 mdel.LocationId = model.LocationId;
+                //update the location id
                 db.Entry(mdel).State = EntityState.Modified;
                 db.SaveChanges();
             }
