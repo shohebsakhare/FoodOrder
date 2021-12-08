@@ -125,18 +125,18 @@ namespace FoodOrder.Controllers
             invoice.Total_Bill = (float)TempData["Total"];
             db.invoiceModel.Add(invoice);
             db.SaveChanges();
-            foreach (var item in li)
-            {
-                FoodWeb.Models.Order odr = new FoodWeb.Models.Order();
-                odr.FkProdId = item.productId;
-                odr.FkInvoiceID = invoice.ID;
-                odr.Order_Date = System.DateTime.Now;
-                odr.Qty = item.qty;
-                odr.Unit_Price = (int)item.price;
-                odr.Order_Bill = item.bill;
-                db.orders.Add(odr);
-                db.SaveChanges();
-            }
+            //foreach (var item in li)
+            //{
+                //FoodWeb.Models.Order odr = new FoodWeb.Models.Order();
+                //odr.FkProdId = item.productId;
+                //odr.FkInvoiceID = invoice.ID;
+                //odr.Order_Date = System.DateTime.Now;
+                //odr.Qty = item.qty;
+                //odr.Unit_Price = (int)item.price;
+                //odr.Order_Bill = item.bill;
+                //db.orders.Add(odr);
+                //db.SaveChanges();
+            //}
             // Save product data in database end
             TempData.Remove("total");
             TempData.Remove("cart");
