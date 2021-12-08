@@ -138,9 +138,9 @@ namespace FoodOrder.Controllers
                 //db.SaveChanges();
             //}
             // Save product data in database end
-            TempData.Remove("total");
-            TempData.Remove("cart");
-            TempData.Keep();
+            //TempData.Remove("total");
+            //TempData.Remove("cart");
+            //TempData.Keep();
             #endregion
             // Show success page
             return View();
