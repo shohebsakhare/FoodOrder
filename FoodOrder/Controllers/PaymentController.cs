@@ -115,7 +115,7 @@ namespace FoodOrder.Controllers
             }
 
             // Save product data in database
-            #region SaveCheckoutData
+            //#region SaveCheckoutData
             var userInCookie = Request.Cookies["UserInfo"];
             int iduser = Convert.ToInt32(userInCookie["idUser"]);
             List<Cart> li = TempData["cart"] as List<Cart>;
@@ -143,7 +143,7 @@ namespace FoodOrder.Controllers
             //TempData.Keep();
             //#endregion
             // Show success page
-            return View();
+            //return View();
         }
 
     }
